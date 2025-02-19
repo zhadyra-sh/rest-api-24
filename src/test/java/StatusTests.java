@@ -1,11 +1,8 @@
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 
 public class StatusTests {
@@ -16,11 +13,15 @@ public class StatusTests {
     @DisplayName("проверка значении что в теле 20 браузера с логом")
     void checkTotalWithLogs() {
         given()
-                .log().all()
+                .log().uri()
                 .get("https://selenoid.autotests.cloud/status")
                 .then()
-                .log().all()
-                .body("total", is(20));
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .body("total", is(20))
+                .body("browsers.chrome", hasKey("100.0"))
+                .body("browsers.firefox", hasKey("122.0"));
 
     }
 
@@ -42,4 +43,6 @@ public class StatusTests {
                 .body("total", is(20));
 
     }
+
+
 }
