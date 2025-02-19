@@ -23,6 +23,7 @@ public class StatusTests {
                 .body("browsers.chrome", hasKey("100.0"))
                 .body("browsers.firefox", hasKey("122.0"));
 
+
     }
 
     @Test
